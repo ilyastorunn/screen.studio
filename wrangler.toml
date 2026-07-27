@@ -1,0 +1,13 @@
+name = "screen-studio-api"
+main = "worker/index.ts"
+compatibility_date = "2026-07-27"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "screen-studio-db"
+database_id = "c0adef45-5093-4c82-8c63-8cf04ba519db"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "screen-studio-assets"

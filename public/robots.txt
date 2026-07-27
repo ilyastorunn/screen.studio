@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://screen-studio.devanta.net/sitemap.xml
