@@ -15,5 +15,5 @@ Build with `npm run build`. For Cloudflare Pages use `npm run build` as the buil
 
 ## Content model
 
-The starter catalog lives in `src/main.tsx` as a typed `App[]`. The next backend phase can move this model to Supabase while keeping screenshot assets in Cloudflare R2. That enables the admin dashboard, authenticated uploads, moderation, and community submissions without coupling the public UI to GitHub.
+The starter catalog lives in `src/main.tsx` as a typed `App[]`. Production content is stored in Cloudflare D1, while screenshot assets are stored in Cloudflare R2. The admin dashboard uses the Cloudflare Worker API, and community submissions are managed through GitHub Issues and pull requests.
 # screen.studio
