@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 190" role="img" aria-labelledby="title">
+  <title id="title">Nico pointing to another app</title>
+  <ellipse cx="91" cy="164" rx="73" ry="12" fill="#080808" stroke="#353535" stroke-width="2"/>
+  <path fill="#F3FF19" stroke="#080808" stroke-width="6" stroke-linejoin="round" d="M29 158c10-13 18-32 25-57 10-35 24-60 51-60 30 0 43 32 38 66 15 7 25 18 29 33-33 18-80 25-143 18Z"/>
+  <path fill="#F3FF19" stroke="#080808" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" d="M126 116c32-5 66-16 101-34l13 23c-34 23-70 38-108 44-14-5-17-22-6-33Z"/>
+  <ellipse cx="98" cy="69" rx="6" ry="15" fill="#080808" transform="rotate(9 98 69)"/>
+  <ellipse cx="118" cy="72" rx="6" ry="15" fill="#080808" transform="rotate(9 118 72)"/>
+  <path fill="none" stroke="#FF5A49" stroke-width="8" stroke-linecap="square" d="m238 73 12-18m-2 28 22-5m-34-17 1-20"/>
+</svg>

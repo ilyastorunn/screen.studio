@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 64" role="img" aria-labelledby="title">
+  <title id="title">Poppy, Miso, and Nico</title>
+  <g stroke="#080808" stroke-width="4" stroke-linejoin="round">
+    <path fill="#FF5A49" d="M2 55c1-23 7-39 22-39 16 0 21 18 22 39H2Z"/>
+    <path fill="#F4F1E8" d="M38 55c1-27 8-45 25-45 19 0 25 20 26 45H38Z"/>
+    <path fill="#F3FF19" d="M76 55c1-23 7-39 22-39 16 0 21 18 22 39H76Z"/>
+  </g>
+  <g fill="#080808">
+    <ellipse cx="20" cy="36" rx="2.5" ry="7" transform="rotate(-9 20 36)"/><ellipse cx="30" cy="35" rx="2.5" ry="7" transform="rotate(-9 30 35)"/>
+    <ellipse cx="59" cy="32" rx="3" ry="8" transform="rotate(-9 59 32)"/><ellipse cx="70" cy="31" rx="3" ry="8" transform="rotate(-9 70 31)"/>
+    <ellipse cx="94" cy="36" rx="2.5" ry="7" transform="rotate(-9 94 36)"/><ellipse cx="104" cy="35" rx="2.5" ry="7" transform="rotate(-9 104 35)"/>
+  </g>
+</svg>

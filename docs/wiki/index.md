@@ -1,8 +1,8 @@
-# screen.studio project wiki
+# niceapps.club project wiki
 
 ## Current status
 
-`screen.studio` is a small open-source, community-curated catalog of app design. The current public UI is a Vite + React single-page app with hash routing. The active data path is a Cloudflare Worker backed by D1, with R2 used for uploaded screenshot assets.
+`niceapps.club` is a small open-source, community-curated catalog of app design. The current public UI is a Vite + React single-page app with hash routing. The active data path is a Cloudflare Worker backed by D1, with R2 used for uploaded screenshot assets.
 
 This wiki is a synthesis layer. Source code and configuration remain authoritative; claims below are marked by the evidence they came from.
 

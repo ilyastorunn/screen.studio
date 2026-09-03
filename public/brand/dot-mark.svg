@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64" role="img" aria-labelledby="title">
+  <title id="title">Nico</title>
+  <path fill="#F3FF19" stroke="#080808" stroke-width="4" stroke-linejoin="round" d="M17 53c2-24 7-42 23-42 17 0 22 19 23 42H17Z"/>
+  <ellipse cx="40" cy="54" rx="31" ry="5" fill="#080808"/>
+  <ellipse cx="38" cy="31" rx="3.4" ry="8" fill="#080808" transform="rotate(-10 38 31)"/>
+  <ellipse cx="49" cy="30" rx="3.4" ry="8" fill="#080808" transform="rotate(-10 49 30)"/>
+  <path fill="none" stroke="#FF5A49" stroke-width="4" stroke-linecap="square" d="m59 11 3-7m5 11 6-5m-9 12 8 1"/>
+</svg>

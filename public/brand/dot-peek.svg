@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 92" role="img" aria-labelledby="title">
+  <title id="title">Nico peeking</title>
+  <ellipse cx="75" cy="78" rx="70" ry="9" fill="#080808" stroke="#353535" stroke-width="2"/>
+  <path fill="#F3FF19" stroke="#080808" stroke-width="5" d="M32 76c2-36 13-62 43-62 31 0 40 28 42 62H32Z"/>
+  <ellipse cx="70" cy="45" rx="5" ry="13" fill="#080808" transform="rotate(-12 70 45)"/>
+  <ellipse cx="88" cy="43" rx="5" ry="13" fill="#080808" transform="rotate(-12 88 43)"/>
+  <path fill="none" stroke="#FF5A49" stroke-width="7" stroke-linecap="square" d="m108 16 4-12m8 19 11-8m-14 20 14 2"/>
+</svg>

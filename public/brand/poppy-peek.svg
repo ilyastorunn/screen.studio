@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 130" role="img" aria-labelledby="title">
+  <title id="title">Poppy peeking</title>
+  <ellipse cx="90" cy="111" rx="75" ry="12" fill="#080808" stroke="#353535" stroke-width="2"/>
+  <path fill="#FF5A49" stroke="#080808" stroke-width="5" stroke-linejoin="round" d="M42 108c2-52 15-88 48-88 35 0 46 39 48 88H42Z"/>
+  <ellipse cx="79" cy="61" rx="5" ry="15" fill="#080808" transform="rotate(8 79 61)"/>
+  <ellipse cx="103" cy="59" rx="5" ry="15" fill="#080808" transform="rotate(8 103 59)"/>
+  <path fill="none" stroke="#F3FF19" stroke-width="7" stroke-linecap="square" d="m136 46 17-14m-10 28 22-3m-28-25 4-20"/>
+</svg>

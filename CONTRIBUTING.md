@@ -1,6 +1,6 @@
-# Contributing to screen.studio
+# Contributing to niceapps.club
 
-screen.studio is a community-curated collection of thoughtfully designed apps.
+niceapps.club is a community-curated collection of thoughtfully designed apps.
 
 ## Add an app
 
