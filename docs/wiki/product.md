@@ -13,7 +13,7 @@ nice apps club is a hand-picked collection of apps worth opening. Its public lan
 
 ## Current public surfaces
 
-- A dark-only home page with The Dot hero, global search, category filters, Poppy’s Pick, a responsive app grid, and shared footer.
+- A dark-only home page with an editorial three-mascot hero, a reserved MCP/Skill integration teaser, global search, category filters, Poppy’s Pick, a responsive app grid, and shared footer.
 - App detail pages with icon, title, developer/category metadata, links, screenshot gallery, expandable description, and circular next discovery.
 - Per-screenshot and combined screenshot copy actions that add a nice apps club credit banner.
 - GitHub-based community suggestions; submitted apps are not automatically promoted to Poppy’s Pick.

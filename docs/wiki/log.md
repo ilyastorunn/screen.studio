@@ -1,5 +1,32 @@
 # Project log
 
+## 2026-09-04 — Mascot-stage ellipse removal
+
+- **Scope:** Removed the decorative shared ellipse beneath the clustered hero mascots so the characters sit directly on the page background.
+- **Affected areas:** `src/styles.css`, `docs/wiki/log.md`.
+- **Decisions:** The clustered hero silhouette does not use a ground ring or pedestal decoration.
+- **Verification:** `npm run build` succeeded; all 10 `npm test` cases passed; the hero was visually inspected locally and the ellipse was confirmed absent; `git diff --check` and the wiki link/path check passed.
+- **Deployment:** Not deployed.
+- **Follow-up:** None.
+
+## 2026-09-04 — Clustered club-member hero
+
+- **Scope:** Refined the hero character stage so Poppy, Miso, and Nico overlap like the favicon’s low-high-low silhouette; replaced the previous formal heading with the more playful “Small crew. Big taste.” and renamed the eyebrow to “The Club Members.”
+- **Affected areas:** `src/main.tsx`, `src/styles.css`, `docs/wiki/brand.md`, `implementation.md`, `decisions.md`, and `log.md`.
+- **Decisions:** Multi-character hero compositions follow the clustered club-mark hierarchy instead of evenly spaced character columns. Miso anchors the taller center position, with Poppy and Nico on the lower outer edges.
+- **Verification:** `npm run build` succeeded; all 10 `npm test` cases passed; desktop and `390×844` layouts were visually inspected locally; Poppy’s keyboard-focus introduction was exercised; browser console warnings/errors were empty; `git diff --check` and the wiki link/path check passed.
+- **Deployment:** Not deployed.
+- **Follow-up:** None.
+
+## 2026-09-04 — Editorial mascot hero and integration teaser
+
+- **Scope:** Replaced the raster garden hero with a backgroundless Nico, Poppy, and Miso character stage; added short role introductions, distinct hover/focus gestures, and a compact reserved area for the upcoming MCP/Skill offering.
+- **Affected areas:** `src/main.tsx`, `src/styles.css`, `public/brand/poppy-mark.svg`, `docs/wiki/product.md`, `brand.md`, `implementation.md`, `decisions.md`, and `log.md`.
+- **Decisions:** The home hero introduces all three club characters directly. The MCP/Skill teaser remains non-interactive until real destinations exist. Character motion is CSS-only, role-specific, focus-accessible, and disabled by reduced-motion preferences.
+- **Verification:** `npm run build` succeeded; all 10 `npm test` cases passed; desktop and `390×844` layouts were visually inspected locally; Nico’s focus introduction was exercised; browser console warnings/errors were empty; `git diff --check` and the wiki link/path check passed.
+- **Deployment:** Not deployed.
+- **Follow-up:** Replace the teaser’s coming-soon state with final MCP/Skill copy and destinations when the project owner supplies them.
+
 ## 2026-09-04 — Current-state wiki backfill
 
 - **Scope:** Reconciled the project wiki with the current product, The Dot identity, catalog/search behavior, screenshot system, admin/API implementation, schema history, tests, and verified production rollout.

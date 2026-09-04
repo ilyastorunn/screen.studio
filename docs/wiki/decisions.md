@@ -1,5 +1,15 @@
 # Decisions
 
+## 2026-09-04 — The home hero introduces the club
+
+**Status:** Accepted.
+
+The live hero uses backgroundless Poppy, Miso, and Nico marks in an editorial character stage instead of the raster garden scene. The trio overlap in the favicon’s low-high-low club silhouette, with Miso anchoring the middle, rather than appearing as three evenly spaced cards. Each character has a short introduction and distinct hover/focus gesture. The left column reserves a compact, non-link MCP/Skill teaser until real destinations are available.
+
+**Rationale:** The identity should explain its characters directly, remain visually light, and create a clear future path from discovery into agent workflows without shipping dead navigation.
+
+**Source:** Project-owner design direction; `Hero` in `src/main.tsx` and hero rules in `src/styles.css`.
+
 ## 2026-09-04 — Wiki is mandatory project memory
 
 **Status:** Accepted.

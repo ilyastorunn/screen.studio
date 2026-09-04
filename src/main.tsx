@@ -306,8 +306,12 @@ function DotPickCard({ app }: { app: AppItem }) {
 
 function Hero() {
   return <section className="dot-hero">
-    <div className="hero-copy"><p className="eyebrow">A curated collection of app design</p><h1>Find<br />something nice<span>.</span></h1><p>A hand-picked collection of apps worth opening.</p><a className="outline-cta" href="#apps">Browse the collection <ArrowUpRight /></a></div>
-    <div className="hero-media"><picture><source srcSet="/brand/dot-garden.jpg" type="image/jpeg" /><img src="/brand/dot-garden.png" alt="Nico exploring a handmade garden of app interfaces" width="1448" height="1086" fetchPriority="high" /></picture></div>
+    <div className="hero-copy"><h1>Find<br />something nice<span>.</span></h1><p>A hand-picked collection of apps worth opening.</p><a className="outline-cta" href="#apps">Browse the collection <ArrowUpRight /></a><div className="workflow-teaser" aria-label="MCP and agent skill integrations coming soon"><span>MCP + Skill</span><div><strong>Take the club into your workflow.</strong><small>Integrations are on the way.</small></div><i>Coming soon</i></div></div>
+    <div className="mascot-stage"><div className="mascot-stage-head"><p className="eyebrow">The Club Members</p><h2>Small crew.<br />Big taste.</h2></div><div className="mascot-row">
+      <article className="mascot-card poppy" tabIndex={0} aria-label="Poppy, the club's sharp-eyed picker"><div className="mascot-figure"><img src="/brand/poppy-mark.svg" alt="" /></div><div className="mascot-bio"><strong>Poppy</strong><span>Picks the standouts.</span></div></article>
+      <article className="mascot-card miso" tabIndex={0} aria-label="Miso, the club's thoughtful maker"><div className="mascot-figure"><img src="/brand/miso-mark.svg" alt="" /></div><div className="mascot-bio"><strong>Miso</strong><span>Makes sharing nicer.</span></div></article>
+      <article className="mascot-card nico" tabIndex={0} aria-label="Nico, the club's curious explorer"><div className="mascot-figure"><img src="/brand/dot-mark.svg" alt="" /></div><div className="mascot-bio"><strong>Nico</strong><span>Always looking ahead.</span></div></article>
+    </div></div>
   </section>
 }
 

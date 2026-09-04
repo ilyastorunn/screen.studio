@@ -11,6 +11,8 @@
 
 The public home and detail pages share `.public-shell`, header, footer, search state, catalog state, and dark semantic tokens. The admin is excluded from the public redesign scope.
 
+The home `Hero` keeps the discovery statement on the left and uses backgroundless Poppy, Miso, and Nico marks as an editorial character stage on the right. The trio overlap in the same low-high-low silhouette as the favicon rather than occupying separate columns. Each mascot is keyboard focusable and exposes a short role introduction; CSS-only character-specific gestures run on hover/focus unless reduced motion is requested. A compact, currently non-interactive MCP/Skill teaser reserves the route beneath the primary CTA until the integration destinations and final copy exist.
+
 ## Detail behavior
 
 Detail pages render app icon, category, optional developer, responsive title sizing, short description, platform/update metadata, optional website and App Store links, contact link, screenshot gallery, “Why {App}?” content, and the next catalog item. Long descriptions split into a lead paragraph and expandable remainder.
