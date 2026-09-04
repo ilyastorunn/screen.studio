@@ -9,7 +9,7 @@ npm run build
 npm test
 ```
 
-Vite normally serves the project at `http://localhost:5173`. `npm run build` runs `tsc -b` and the Vite production build. `npm test` runs all `worker/*.test.ts` files with Node’s test runner.
+Vite normally serves the project at `http://localhost:5173`. `npm run build` runs `tsc -b` and the Vite production build. `npm test` runs all `worker/*.test.ts` files with Node’s test runner, then the Creative Studio MCP tests (11 Worker/client + 4 plugin tests as verified 2026-09-05).
 
 ## Cloudflare resources
 

@@ -19,9 +19,11 @@ Screenshot exports choose one of the three characters at random and render “{N
 Public UI uses semantic tokens scoped to `.public-shell`:
 
 - Page `#080808`, surface `#101010`, raised surface `#151515`.
-- Text `#F4F1E8`, muted `#969690`, faint `#62625E`, line `#2A2A28`.
+- Text `#F4F1E8`, muted `#969690`, faint `#92928B`, line `#2A2A28`.
 - Dot yellow `#F3FF19`, coral accent/signal `#FF5A49`.
 - Media radius: `14px`.
+
+The compact hero gives earlier access to the collection while preserving the three-character composition. Its primary collection CTA uses an off-white fill, with yellow hover feedback. Mobile places the club introduction and small mascot trio side by side rather than a second full-height section. Essential controls use 44px targets and catalog metadata uses larger text.
 
 Inter is the display/body base and DM Mono is used for labels, metadata, search, and utility copy. The public theme is dark-only, but semantic variables are the required extension point for any future theme.
 
@@ -29,7 +31,7 @@ Inter is the display/body base and DM Mono is used for labels, metadata, search,
 
 - Hero copy/character stage and collection cards enter with short CSS animations.
 - The hero trio use distinct, role-shaped hover/focus gestures: Nico leans to look, Poppy squashes and hops, and Miso sways. Featured Poppy peeks upward and app cards use small lift states.
-- Smooth document scrolling and gallery scrolling are enabled only where appropriate.
+- Gallery arrows use smooth scrolling unless reduced motion is enabled. Route changes and collection returns position immediately, avoiding a long animated journey. A skip link, visible focus states, and wrapping long titles support keyboard and narrow-screen use.
 - `prefers-reduced-motion: reduce` removes transitions, animations, and smooth scrolling without removing function.
 - Decorative mascot artwork uses empty alt text; the keyboard-focusable hero introductions and meaningful Next Discovery pose carry accessible names.
 

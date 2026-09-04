@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useMemo, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ArrowLeft, ArrowUpRight, Copy, ExternalLink, GitBranch, Mail, Plus, Search, Trash2, Upload, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Copy, ExternalLink, GitBranch, Mail, Plus, Search, Trash2, Upload, X } from 'lucide-react'
 import './styles.css'
 import { appleLookupEndpoint, parseAppleLookup } from './app-store'
 import { filterCatalog, nextDiscovery, selectDotPick } from './catalog'
@@ -25,12 +25,6 @@ type AppItem = {
   updated_at?: string
   is_dot_pick?: boolean
 }
-
-const fallbackApps: AppItem[] = [
-  { slug: 'focus-flow', name: 'Focus Flow', category: 'Productivity', description: 'A calm workspace for planning your day and protecting your attention.', icon: '◒', accent: '#b8f25a', updated: '2 days ago', screenshots: ['https://images.unsplash.com/photo-1551650975-87deedd944c3?w=900&q=85', 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=900&q=85', 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=900&q=85'] },
-  { slug: 'moodly', name: 'Moodly', category: 'Health & Fitness', description: 'Understand your patterns, check in with yourself, and make small changes that last.', icon: '✦', accent: '#f7a6cb', updated: '5 days ago', screenshots: ['https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=900&q=85', 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=85', 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=900&q=85'] },
-  { slug: 'orbit', name: 'Orbit', category: 'Finance', description: 'A beautifully simple way to see where your money goes.', icon: '◉', accent: '#b7c6ff', updated: '1 week ago', screenshots: ['https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=85', 'https://images.unsplash.com/photo-1559526324-593bc073d938?w=900&q=85', 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=900&q=85'] },
-]
 
 function formatDate(value: string) {
   if (!value) return 'recently'
@@ -254,8 +248,9 @@ async function copyPng(png: Promise<Blob>) {
 }
 
 function AppIcon({ app, large = false }: { app: Pick<AppItem, 'icon' | 'accent' | 'name'>; large?: boolean }) {
+  const [failed, setFailed] = useState('')
   return <div className={`app-icon${large ? ' large' : ''}`} style={{ background: app.accent }}>
-    {isImage(app.icon) ? <img src={app.icon} alt={`${app.name} icon`} /> : <span aria-hidden="true">{app.icon}</span>}
+    {isImage(app.icon) && failed !== app.icon ? <img src={app.icon} onError={() => setFailed(app.icon)} alt={`${app.name} icon`} /> : <span aria-hidden="true">{isImage(app.icon) ? app.name.slice(0, 1) : app.icon}</span>}
   </div>
 }
 
@@ -265,23 +260,38 @@ function Brand() {
 
 function Header({ query, setQuery, catalog }: { query: string; setQuery: (value: string) => void; catalog: AppItem[] }) {
   const searchRef = useRef<HTMLInputElement>(null)
-  const searchResults = useMemo(() => query.trim() ? filterCatalog(catalog, query, 'All').slice(0, 8) : [], [catalog, query])
-  const searchOpen = Boolean(query.trim())
+  const headerRef = useRef<HTMLElement>(null)
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(-1)
+  const matches = useMemo(() => query.trim() ? filterCatalog(catalog, query, 'All') : [], [catalog, query])
+  const searchResults = matches.slice(0, 8)
+  const searchOpen = open && Boolean(query.trim())
+  const choose = (slug: string) => { location.hash = `/apps/${slug}`; setQuery(''); setOpen(false) }
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault(); searchRef.current?.focus()
       }
-      if (event.key === 'Escape') { setQuery(''); searchRef.current?.blur() }
+      if (event.key === 'Escape' && headerRef.current?.contains(document.activeElement)) { searchRef.current?.focus(); setOpen(false) }
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpen(false)
     }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => { window.removeEventListener('keydown', onKeyDown); document.removeEventListener('pointerdown', onPointerDown) }
   }, [])
-  return <header className={`site-header${searchOpen ? ' has-search-results' : ''}`}><div className="site-header-inner">
+  return <><a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a><header ref={headerRef} className={`site-header${searchOpen ? ' has-search-results' : ''}`} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }}><div className="site-header-inner">
     <Brand />
-    <label className="site-search"><Search aria-hidden="true" /><input ref={searchRef} value={query} onChange={event => setQuery(event.target.value)} placeholder="Search apps..." aria-label="Search apps" aria-expanded={searchOpen} aria-controls="global-search-results" />{searchOpen ? <button type="button" onClick={() => { setQuery(''); searchRef.current?.focus() }} aria-label="Clear search"><X /></button> : <kbd>⌘K</kbd>}</label>
-    <nav className="site-nav"><a href="#apps">Explore</a><a className="suggest-link" href="https://github.com/ilyastorunn/screen.studio/issues/new?template=app-request.yml" target="_blank" rel="noreferrer">Suggest an app <ArrowUpRight /></a></nav>
-  </div>{searchOpen && <div className="search-popover" id="global-search-results"><div className="search-popover-head"><span>Search results</span><small>{searchResults.length}{searchResults.length === 8 ? '+' : ''} found</small></div>{searchResults.length ? <div className="search-result-list">{searchResults.map(app => <a href={`#/apps/${app.slug}`} key={app.slug} onClick={() => setQuery('')}><AppIcon app={app} /><span><strong>{app.name}</strong><small>{app.category}</small></span><ArrowUpRight /></a>)}</div> : <div className="search-no-results"><strong>No nice apps found.</strong><span>Try a different name or category.</span></div>}</div>}</header>
+    <div className="site-search"><Search aria-hidden="true" /><input ref={searchRef} value={query} onFocus={() => setOpen(true)} onChange={event => { setQuery(event.target.value); setActive(-1); setOpen(true) }} onKeyDown={event => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault(); setOpen(true)
+        setActive(current => searchResults.length ? (current < 0 ? (event.key === 'ArrowDown' ? 0 : searchResults.length - 1) : (current + (event.key === 'ArrowDown' ? 1 : -1) + searchResults.length) % searchResults.length) : -1)
+      }
+      if (event.key === 'Enter' && searchOpen && searchResults.length) { event.preventDefault(); choose(searchResults[Math.max(0, active)].slug) }
+    }} placeholder="Search apps or categories" aria-label="Search apps or categories" role="combobox" aria-autocomplete="list" aria-expanded={searchOpen} aria-controls={searchOpen ? 'global-search-results' : undefined} aria-activedescendant={searchOpen && active >= 0 ? `search-option-${active}` : undefined} />{query ? <button type="button" onClick={() => { setQuery(''); setActive(-1); searchRef.current?.focus() }} aria-label="Clear search"><X /></button> : <kbd>{/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl+'}K</kbd>}</div>
+    <nav className="site-nav" aria-label="Main navigation"><a href="#apps">Explore</a><a className="suggest-link" href="https://github.com/ilyastorunn/screen.studio/issues/new?template=app-request.yml" target="_blank" rel="noreferrer">Suggest an app <ArrowUpRight /></a></nav>
+  </div>{searchOpen && <div className="search-popover"><div className="search-popover-head"><span>Search results</span><small role="status">{matches.length > 8 ? `Showing 8 of ${matches.length}` : `${matches.length} found`}</small></div><div className="search-result-list" id="global-search-results" role="listbox" aria-label="Matching apps">{searchResults.map((app, index) => <a role="option" aria-selected={active === index} id={`search-option-${index}`} href={`#/apps/${app.slug}`} key={app.slug} onClick={() => { setQuery(''); setOpen(false) }}><AppIcon app={app} /><span><strong>{app.name}</strong><small>{app.category}</small></span><ArrowUpRight /></a>)}</div>{!searchResults.length && <div className="search-no-results" role="status"><strong>No matches yet.</strong><span>Try an app name or a category like “Design”.</span></div>}</div>}</header></>
 }
 
 function ScreenshotStrip({ app }: { app: AppItem }) {
@@ -315,16 +325,16 @@ function Hero() {
   </section>
 }
 
-function Collection({ catalog, loading, query }: { catalog: AppItem[]; loading: boolean; query: string }) {
+function Collection({ catalog, loading, query, error, retry }: { catalog: AppItem[]; loading: boolean; query: string; error: string; retry: () => void }) {
   const [category, setCategory] = useState('All')
   const availableCategories = ['All', ...Array.from(new Set(catalog.map(app => app.category)))]
   const filtered = useMemo(() => filterCatalog(catalog, query, category), [catalog, query, category])
   const dotPick = selectDotPick(catalog)
   const showPick = Boolean(dotPick && filtered.some(app => app.slug === dotPick.slug))
   const regularApps = showPick ? filtered.filter(app => app.slug !== dotPick?.slug) : filtered
-  return <section id="apps" className="collection-section"><div className="collection-head"><div><p className="eyebrow">The collection</p><h2>Latest apps</h2></div><span>{loading ? 'Loading…' : `${filtered.length} ${filtered.length === 1 ? 'app' : 'apps'}`}<i /></span></div>
-    <div className="filters" aria-label="Filter apps by category">{availableCategories.map(item => <button className={category === item ? 'active' : ''} aria-pressed={category === item} onClick={() => setCategory(item)} key={item}>{item}{item === 'All' && <i />}</button>)}</div>
-    {filtered.length ? <div key={`${query.trim().toLowerCase()}-${category}`} className={`collection-grid${showPick ? ' with-pick' : ''}`}>{showPick && dotPick && <DotPickCard app={dotPick} />}{regularApps.map((app, index) => <AppCard key={app.slug} app={app} lead={showPick && index === 0} />)}</div> : <div className="public-empty"><img src="/brand/dot-peek.svg" alt="" /><strong>No nice apps found.</strong><span>Try another search or category.</span></div>}
+  return <section id="apps" className="collection-section" aria-busy={loading}><div className="collection-head"><div><p className="eyebrow">The collection</p><h2>{category === 'All' ? 'Latest apps' : category}</h2></div><span role="status">{loading ? 'Loading…' : `${filtered.length} ${filtered.length === 1 ? 'app' : 'apps'}`}<i /></span></div>
+    <div className="filters" role="group" aria-label="Filter apps by category">{availableCategories.map(item => <button className={category === item ? 'active' : ''} aria-pressed={category === item} onClick={() => setCategory(item)} key={item}>{item}{item === 'All' && <i />}</button>)}</div>
+    {loading ? <div className="collection-loading" role="status"><span>Finding something nice…</span><div className="skeleton-grid" aria-hidden="true">{[0, 1, 2].map(item => <div key={item} />)}</div></div> : error ? <div className="public-empty" role="alert"><img src="/brand/dot-peek.svg" alt="" /><strong>The collection couldn’t load.</strong><span>{error}</span><button className="outline-cta" onClick={retry}>Try again <ArrowRight /></button></div> : filtered.length ? <div key={`${query.trim().toLowerCase()}-${category}`} className={`collection-grid${showPick ? ' with-pick' : ''}`}>{showPick && dotPick && <DotPickCard app={dotPick} />}{regularApps.map((app, index) => <AppCard key={app.slug} app={app} lead={showPick && index === 0} />)}</div> : <div className="public-empty"><img src="/brand/dot-peek.svg" alt="" /><strong>{catalog.length ? 'Nothing in this category yet.' : 'Good things are on the way.'}</strong><span>{catalog.length ? 'Explore the rest of the collection.' : 'The first curated apps will appear here.'}</span>{category !== 'All' && <button className="outline-cta" onClick={() => setCategory('All')}>View all apps <ArrowRight /></button>}</div>}
   </section>
 }
 
@@ -332,14 +342,16 @@ function Footer({ count }: { count: number }) {
   return <footer className="site-footer"><Brand /><span>Curated apps.<br />No noise.</span><span className="footer-count">{count} apps and counting.</span><div><a href="https://github.com/ilyastorunn/screen.studio/issues/new?template=app-request.yml" target="_blank" rel="noreferrer"><img src="/brand/dot-mark.svg" alt="" /> Suggest an app</a><a href="https://github.com/ilyastorunn/screen.studio" target="_blank" rel="noreferrer"><GitBranch /> GitHub</a></div></footer>
 }
 
-function Home({ catalog, loading, query, setQuery }: { catalog: AppItem[]; loading: boolean; query: string; setQuery: (value: string) => void }) {
-  return <div className="public-shell"><Header query={query} setQuery={setQuery} catalog={catalog} /><main><Hero /><Collection catalog={catalog} loading={loading} query="" /></main><Footer count={catalog.length} /></div>
+function Home({ catalog, loading, query, setQuery, error, retry }: { catalog: AppItem[]; loading: boolean; query: string; setQuery: (value: string) => void; error: string; retry: () => void }) {
+  return <div className="public-shell"><Header query={query} setQuery={setQuery} catalog={catalog} /><main id="main-content" tabIndex={-1}><Hero /><Collection catalog={catalog} loading={loading} query="" error={error} retry={retry} /></main><Footer count={catalog.length} /></div>
 }
 
 function ScreenshotGallery({ app }: { app: AppItem }) {
   const [copying, setCopying] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
   const [copyError, setCopyError] = useState('')
+  const railRef = useRef<HTMLDivElement>(null)
+  const [edges, setEdges] = useState({ start: true, end: false })
   const progressRef = useRef<HTMLDivElement>(null)
   const frameRef = useRef(0)
   const updateProgress = (rail: HTMLDivElement) => {
@@ -347,18 +359,34 @@ function ScreenshotGallery({ app }: { app: AppItem }) {
     frameRef.current = window.requestAnimationFrame(() => {
       frameRef.current = 0
       const range = rail.scrollWidth - rail.clientWidth
-      progressRef.current?.style.setProperty('--gallery-progress', String(range > 0 ? rail.scrollLeft / range : 0))
+      progressRef.current?.style.setProperty('--gallery-progress', String(range > 0 ? rail.scrollLeft / range : 1))
+      setEdges({ start: rail.scrollLeft <= 2, end: range - rail.scrollLeft <= 2 })
     })
   }
-  const runCopy = async (target: string, png: Promise<Blob>) => {
+  useEffect(() => {
+    const rail = railRef.current
+    if (!rail) return
+    const observer = new ResizeObserver(() => updateProgress(rail))
+    observer.observe(rail)
+    Array.from(rail.children).forEach(child => observer.observe(child))
+    updateProgress(rail)
+    return () => { observer.disconnect(); cancelAnimationFrame(frameRef.current); frameRef.current = 0 }
+  }, [])
+  const move = (direction: number) => {
+    const rail = railRef.current
+    if (rail) rail.scrollBy({ left: direction * ((rail.firstElementChild?.getBoundingClientRect().width || rail.clientWidth) + 20), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+  }
+  const runCopy = async (target: string, makePng: () => Promise<Blob>) => {
     setCopying(target); setCopied(null); setCopyError('')
-    try { await copyPng(png); setCopied(target); window.setTimeout(() => setCopied(current => current === target ? null : current), 1800) }
+    try {
+      if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') throw new Error('Image copying is not supported in this browser. Try Chrome, Edge or Safari.')
+      await copyPng(makePng()); setCopied(target); window.setTimeout(() => setCopied(current => current === target ? null : current), 1800) }
     catch (cause) { setCopyError(cause instanceof Error ? cause.message : 'Copy failed. Please try again.') }
     finally { setCopying(null) }
   }
-  return <section className="detail-showcase" aria-labelledby="screenshots-title"><div className="showcase-head"><div><p className="eyebrow">Visual library</p><h2 id="screenshots-title">App Store screenshots</h2></div><button className="copy-all" type="button" disabled={Boolean(copying)} onClick={() => void runCopy('all', screenshotsAsOnePng(app.screenshots, app))}><img src="/brand/miso-mark.svg" alt="" />{copying === 'all' ? 'Combining…' : copied === 'all' ? 'Copied all ✓' : <>Copy all <Copy /></>}</button></div>
-    <div className="screenshot-rail" tabIndex={0} onScroll={event => updateProgress(event.currentTarget)}>{app.screenshots.map((shot, index) => { const target = `shot-${index}`; return <button className={`screenshot-copy${copying === target ? ' is-copying' : ''}${copied === target ? ' is-copied' : ''}`} type="button" key={shot} disabled={Boolean(copying)} onClick={() => void runCopy(target, screenshotAsPng(shot, app))} aria-label={`Copy ${app.name} screenshot ${index + 1}`}><img src={shot} alt={`${app.name} screenshot ${index + 1}`} loading={index < 3 ? 'eager' : 'lazy'} /><span>{copying === target ? 'Copying…' : copied === target ? 'Copied ✓' : 'Click to copy'}</span></button> })}</div>
-    <div className="gallery-progress" ref={progressRef}><i /><img src="/brand/dot-mark.svg" alt="" /></div>{copyError && <p className="copy-status error" role="alert">{copyError}</p>}<p className="copy-status" aria-live="polite">{copied === 'all' ? 'All screenshots were copied as one PNG.' : copied?.startsWith('shot-') ? 'Screenshot copied as a PNG.' : ''}</p>
+  return <section className="detail-showcase" aria-labelledby="screenshots-title"><div className="showcase-head"><div><p className="eyebrow">Visual library</p><h2 id="screenshots-title">App Store screenshots</h2></div><div className="gallery-actions"><button className="copy-all" type="button" disabled={Boolean(copying)} onClick={() => void runCopy('all', () => screenshotsAsOnePng(app.screenshots, app))}><img src="/brand/miso-mark.svg" alt="" />{copying === 'all' ? 'Combining…' : copied === 'all' ? 'Copied all ✓' : <>Copy all <Copy /></>}</button><button className="gallery-arrow" type="button" aria-label="Previous screenshot" disabled={edges.start} onClick={() => move(-1)}><ArrowLeft /></button><button className="gallery-arrow" type="button" aria-label="Next screenshot" disabled={edges.end} onClick={() => move(1)}><ArrowRight /></button></div></div><p className="gallery-hint">{app.screenshots.length} screenshots · Scroll to explore. Select a screenshot to copy it with a club credit.</p>
+    <div ref={railRef} className="screenshot-rail" tabIndex={0} role="region" aria-label={`${app.name} screenshots`} onScroll={event => updateProgress(event.currentTarget)}>{app.screenshots.map((shot, index) => { const target = `shot-${index}`; return <button className={`screenshot-copy${copying === target ? ' is-copying' : ''}${copied === target ? ' is-copied' : ''}`} type="button" key={shot} disabled={Boolean(copying)} onClick={() => void runCopy(target, () => screenshotAsPng(shot, app))} aria-label={`Copy ${app.name} screenshot ${index + 1}`}><img src={shot} alt={`${app.name} screenshot ${index + 1}`} loading={index < 3 ? 'eager' : 'lazy'} /><span>{copying === target ? 'Copying…' : copied === target ? 'Copied ✓' : 'Copy screenshot'}</span></button> })}</div>
+    <div className="gallery-progress" aria-hidden="true" ref={progressRef}><i /><img src="/brand/dot-mark.svg" alt="" /></div>{copyError && <p className="copy-status error" role="alert">{copyError}</p>}<p className="copy-status" aria-live="polite">{copied === 'all' ? 'All screenshots were copied as one PNG.' : copied?.startsWith('shot-') ? 'Screenshot copied as a PNG.' : ''}</p>
   </section>
 }
 
@@ -374,10 +402,10 @@ function Detail({ app, catalog, query, setQuery }: { app: AppItem; catalog: AppI
   const remainingDescription = descriptionParagraphs.slice(1).join('\n\n')
   const next = nextDiscovery(catalog, app.slug)
   const titleClass = app.name.length > 32 ? ' is-long' : ''
-  return <div className="public-shell"><Header query={query} setQuery={setQuery} catalog={catalog} /><main className="detail-page"><a className="back" href="#/"><ArrowLeft /> Back to all apps</a>
-    <section className="detail-overview"><div className="detail-primary"><div className="detail-title-line"><AppIcon app={app} large /><div className="detail-heading"><div className="detail-kicker"><span>{app.category}</span><i />{app.developer && <span>{app.developer}</span>}</div><h1 className={titleClass}>{app.name}</h1></div></div><p className="detail-desc">{app.description}</p><div className="detail-links"><span>{app.platform || 'iOS'}</span><span>Updated {app.updated}</span>{app.website_url && <a href={app.website_url} target="_blank" rel="noreferrer">Website <ExternalLink /></a>}{app.app_store_url && <a href={app.app_store_url} target="_blank" rel="noreferrer">App Store <ExternalLink /></a>}<a href="mailto:ilyastorun.dev@gmail.com">Contact <Mail /></a></div></div></section>
+  return <div className="public-shell"><Header query={query} setQuery={setQuery} catalog={catalog} /><main id="main-content" tabIndex={-1} className="detail-page"><a className="back" href="#apps"><ArrowLeft /> Back to all apps</a>
+    <section className="detail-overview"><div className="detail-primary"><div className="detail-title-line"><AppIcon app={app} large /><div className="detail-heading"><div className="detail-kicker"><span>{app.category}</span><i />{app.developer && <span>{app.developer}</span>}</div><h1 className={titleClass}>{app.name}</h1></div></div><p className="detail-desc">{app.description}</p><div className="detail-links"><span>{app.platform || 'iOS'}</span><span>Updated {app.updated}</span>{app.website_url && <a href={app.website_url} target="_blank" rel="noreferrer">Website <ExternalLink /></a>}{app.app_store_url && <a className="store-link" href={app.app_store_url} target="_blank" rel="noreferrer">View on App Store <ExternalLink /></a>}<a href="mailto:ilyastorun.dev@gmail.com">Contact <Mail /></a></div></div></section>
     {app.screenshots.length ? <ScreenshotGallery app={app} /> : <div className="detail-empty"><img src="/brand/dot-peek.svg" alt="" /><p>No screenshots have been added yet.</p></div>}
-    {firstParagraph && <section className="detail-about"><p className="eyebrow">About the app</p><h2>Why {app.name.split(':')[0]}?</h2><p className="about-lead">{firstParagraph}</p>{remainingDescription && <details><summary>Read more</summary><p>{remainingDescription}</p></details>}</section>}
+    {firstParagraph && <section className="detail-about"><p className="eyebrow">About the app</p><h2>About {app.name.split(':')[0]}</h2><p className="about-lead">{firstParagraph}</p>{remainingDescription && <details><summary>Read more</summary><p>{remainingDescription}</p></details>}</section>}
     {next && <NextDiscovery app={next} />}
   </main><Footer count={catalog.length} /></div>
 }
@@ -396,6 +424,16 @@ function AdminCloud() {
   const [importing, setImporting] = useState(false)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const editorOpen = Boolean(editing)
+  useEffect(() => {
+    if (!editorOpen) return
+    const previousFocus = document.activeElement as HTMLElement | null
+    dialogRef.current?.showModal()
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = overflow; previousFocus?.focus() }
+  }, [editorOpen])
   const auth = { 'X-Admin-Token': token }
 
   const load = async () => {
@@ -498,7 +536,7 @@ function AdminCloud() {
       <label className="token-field">Worker admin token<input type="password" value={token} onChange={event => { setToken(event.target.value); localStorage.setItem('screen-admin-token', event.target.value) }} placeholder="Required for save, delete and upload" /><small>Stored only in this browser.</small></label>
       {!editing && error && <p className="form-message error" role="alert">{error}</p>}{!editing && loadError && <div className="form-message error" role="alert">{loadError} <button type="button" onClick={() => void load()}>Retry</button></div>}{!editing && notice && <p className="form-message success" role="status">{notice}</p>}
       <div className="admin-table"><div className="admin-table-head"><span>App</span><span>Category</span><span>Updated</span><span></span></div>{loading ? <div className="empty">Loading apps…</div> : items.length ? items.map(app => <div className="admin-row" key={app.slug}><div className="admin-app"><AppIcon app={app} /><div><strong>{app.name}</strong><small>/{app.slug}</small></div></div><span>{app.category}</span><span>{app.updated}</span><div className="row-actions"><button onClick={() => openEdit(app)}>Edit</button><button aria-label={`Delete ${app.name}`} onClick={() => void remove(app)}><Trash2 /></button></div></div>) : loadError ? <div className="empty">Unable to display the app list right now. Nothing was deleted.</div> : <div className="empty">No apps yet. Import the first one from the App Store.</div>}</div>
-      {editing && <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) setEditing(null) }}><form className="admin-form" onSubmit={save}><div className="form-head"><div><p className="eyebrow">{editing.slug ? 'Edit app' : 'New app'}</p><h2>{editing.slug ? 'Update details' : 'Add to collection'}</h2></div><button type="button" className="close-button" onClick={() => setEditing(null)} aria-label="Close">×</button></div>
+      {editing && <dialog ref={dialogRef} className="admin-dialog" aria-labelledby="editor-title" onCancel={event => { if (saving || importing || uploading) event.preventDefault(); else setEditing(null) }}><form className="admin-form" onSubmit={save}><div className="form-head"><div><p className="eyebrow">{editing.slug ? 'Edit app' : 'New app'}</p><h2 id="editor-title">{editing.slug ? 'Update details' : 'Add to collection'}</h2></div><button type="button" className="close-button" disabled={saving || importing || uploading} onClick={() => setEditing(null)} aria-label="Close">×</button></div>
         <section className="import-panel"><label>App Store URL or Apple ID<div className="import-controls"><input value={importUrl} onChange={event => setImportUrl(event.target.value)} placeholder="https://apps.apple.com/…" /><button className="primary-button" type="button" disabled={importing} onClick={() => void importApp()}>{importing ? 'Importing…' : 'Import app'}</button></div></label><small>Imports the name, descriptions, category, developer, icon and screenshots.</small></section>
         {error && <p className="form-message error" role="alert">{error}</p>}{notice && <p className="form-message success" role="status">{notice}</p>}
         <div className="form-grid"><label>Name<input required value={editing.name} onChange={event => setEditing({ ...editing, name: event.target.value })} /></label><label>Category<input required value={editing.category} onChange={event => setEditing({ ...editing, category: event.target.value })} /></label></div>
@@ -509,28 +547,53 @@ function AdminCloud() {
         <div className="icon-preview"><AppIcon app={editing} large /><span>{isImage(editing.icon) ? 'Imported icon preview' : 'Emoji icon preview'}</span></div>
         <label className="upload-control">Add screenshots<input type="file" multiple accept="image/*" disabled={uploading} onChange={upload} /><span><Upload /> {uploading ? 'Uploading to R2…' : 'Choose images'}</span></label>
         <div className="upload-list">{editing.screenshots.map((shot, index) => <div className="upload-item" key={`${shot}-${index}`}><img src={shot} alt={`Screenshot ${index + 1}`} /><button type="button" onClick={() => setEditing(current => current ? { ...current, screenshots: current.screenshots.filter((_, itemIndex) => itemIndex !== index) } : current)}>Remove</button></div>)}</div>
-        <div className="form-actions"><button type="button" onClick={() => setEditing(null)}>Cancel</button><button className="primary-button" disabled={saving || importing || uploading} type="submit">{saving ? 'Saving…' : 'Save app'}</button></div>
-      </form></div>}
+        <div className="form-actions"><button type="button" disabled={saving || importing || uploading} onClick={() => setEditing(null)}>Cancel</button><button className="primary-button" disabled={saving || importing || uploading} type="submit">{saving ? 'Saving…' : 'Save app'}</button></div>
+      </form></dialog>}
     </main>
   </div>
 }
 
 function App() {
-  const [catalog, setCatalog] = useState<AppItem[]>(fallbackApps)
+  const [catalog, setCatalog] = useState<AppItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [attempt, setAttempt] = useState(0)
   const [path, setPath] = useState(() => location.hash)
   const [query, setQuery] = useState('')
-  useEffect(() => { const onHashChange = () => setPath(location.hash); window.addEventListener('hashchange', onHashChange); return () => window.removeEventListener('hashchange', onHashChange) }, [])
+  const retry = () => setAttempt(value => value + 1)
+  useEffect(() => { const onHashChange = () => { setPath(location.hash); setQuery('') }; window.addEventListener('hashchange', onHashChange); return () => window.removeEventListener('hashchange', onHashChange) }, [])
   useEffect(() => {
-    if (path.startsWith('#/apps/') || path === '#/' || path === '') window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [path])
+    const frame = requestAnimationFrame(() => {
+      if (path === '#apps') document.getElementById('apps')?.scrollIntoView({ behavior: 'instant', block: 'start' })
+      else window.scrollTo({ top: 0, behavior: 'instant' })
+      if (path.startsWith('#/apps/') && !loading) document.getElementById('main-content')?.focus({ preventScroll: true })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [path, loading])
   useEffect(() => {
-    fetch(`${API_URL}/api/apps`).then(response => { if (!response.ok) throw new Error(); return response.json() }).then((rows: Record<string, unknown>[]) => { if (rows.length) setCatalog(rows.map(parseApp)) }).catch(() => undefined).finally(() => setLoading(false))
-  }, [])
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), 15000)
+    let current = true
+    setLoading(true); setError('')
+    fetch(`${API_URL}/api/apps`, { signal: controller.signal }).then(response => {
+      if (!response.ok) throw new Error()
+      return response.json()
+    }).then((rows: Record<string, unknown>[]) => {
+      if (!Array.isArray(rows)) throw new Error()
+      if (current) setCatalog(rows.map(parseApp))
+    }).catch(() => { if (current) setError('Check your connection and try again.') }).finally(() => {
+      clearTimeout(timeout)
+      if (current) setLoading(false)
+    })
+    return () => { current = false; clearTimeout(timeout); controller.abort() }
+  }, [attempt])
   const slug = path.split('/')[2]
   const selected = catalog.find(app => app.slug === slug)
   const isAdminHost = location.hostname === 'admin-screen-studio.devanta.net'
-  return isAdminHost || path === '#/admin' ? <AdminCloud /> : selected ? <Detail app={selected} catalog={catalog} query={query} setQuery={setQuery} /> : <Home catalog={catalog} loading={loading} query={query} setQuery={setQuery} />
+  if (isAdminHost || path === '#/admin') return <AdminCloud />
+  if (selected) return <Detail key={selected.slug} app={selected} catalog={catalog} query={query} setQuery={setQuery} />
+  if (path.startsWith('#/apps/') || !['', '#/', '#apps'].includes(path)) return <div className="public-shell"><Header query={query} setQuery={setQuery} catalog={catalog} /><main id="main-content" tabIndex={-1} className="route-state"><img src="/brand/dot-peek.svg" alt="" /><h1>{loading ? 'Finding your app…' : error ? 'We couldn’t load this app.' : 'This app isn’t in the club yet.'}</h1><p role="status">{loading ? 'Just a moment.' : error || 'The link may have changed. There’s more to discover in the collection.'}</p>{error && <button className="outline-cta" onClick={retry}>Try again</button>}<a className="outline-cta" href="#apps">Browse the collection <ArrowRight /></a></main><Footer count={catalog.length} /></div>
+  return <Home catalog={catalog} loading={loading} query={query} setQuery={setQuery} error={error} retry={retry} />
 }
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>)

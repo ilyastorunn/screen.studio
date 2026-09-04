@@ -18,6 +18,8 @@ Before asking questions, extract what is already known. Ask only questions whose
 
 Raw in-app images are required before producing final screenshot compositions. If the user has none, request them and stop at a useful brief or shot list. Do not attempt Simulator, Xcode, TestFlight, or physical-device capture in this version.
 
+“Final” means directly uploadable to App Store Connect, not a contact sheet, mockup, or art-direction image. Before rendering, select an Apple-supported screenshot slot for the target device family and locale. Produce one opaque RGB PNG or JPEG per screenshot at that slot's exact pixel dimensions. Preserve supplied product UI pixel-for-pixel; generative models may create backgrounds or direction references but must not redraw, reinterpret, or replace the source UI in a final asset.
+
 Record the normalized app brief using [references/app-brief.md](references/app-brief.md). Mark uncertain claims instead of filling gaps with invented product capabilities.
 
 ## Retrieve references
@@ -52,7 +54,8 @@ Do not jump from a sparse brief directly to polished assets.
 1. Confirm the normalized brief and selected references.
 2. Present the screenshot narrative and copy.
 3. Present two or three materially different visual directions when a direction has not already been chosen.
-4. Produce final compositions only after raw screens exist and the direction is sufficiently determined.
-5. Review the set with [references/quality-rubric.md](references/quality-rubric.md) before calling it ready.
+4. Use contact sheets only as optional direction/critique artifacts; never present them as the deliverable requested by a user who asked for final screenshots.
+5. Produce final compositions only after raw screens exist, the direction is sufficiently determined, and a supported App Store Connect slot has been selected.
+6. Export each frame separately, verify dimensions, format, color channels, file integrity, sequence naming, copy, and source-UI fidelity, then review the set with [references/quality-rubric.md](references/quality-rubric.md).
 
-The current plugin validates strategy and reference retrieval. If no renderer is available, deliver a production-ready creative specification and clearly label final PNG rendering as unavailable; do not pretend an image was rendered.
+If no renderer is available, state that final delivery is blocked and provide the specification only as an intermediate artifact. Do not call the task complete or describe a generated mockup as ready. A final delivery must include the individual files, selected App Store slot, exact dimensions, ordered upload manifest, and verification evidence.

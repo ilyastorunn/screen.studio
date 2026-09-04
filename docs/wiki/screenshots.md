@@ -2,9 +2,9 @@
 
 ## Detail gallery
 
-App detail screenshots are presented in a horizontally scrollable, keyboard-focusable rail. Cards share a responsive height and use `object-fit: contain`, so different source aspect ratios remain aligned without cropping the phone artwork. The rail uses scroll snap and smooth scrolling.
+App detail screenshots are presented in a horizontally scrollable, keyboard-focusable rail. Cards share a responsive height and use `object-fit: contain`, so different source aspect ratios remain aligned without cropping the phone artwork. The rail uses scroll snap and smooth scrolling, plus named Previous/Next screenshot buttons disabled at their respective boundaries. Introductory copy states the screenshot count and explains the branded copy behavior before interaction; touch devices show the individual copy label without hover.
 
-A progress line tracks the rail’s real `scrollLeft` range. Nico’s mark moves with the normalized progress value. Updates are throttled with `requestAnimationFrame`.
+A progress line tracks the rail’s real `scrollLeft` range. Nico’s mark moves with the normalized progress value. Updates are throttled with `requestAnimationFrame`; a ResizeObserver updates progress and arrow boundaries when the rail or images resize. The observer and animation frame are cleaned up on unmount. Each app detail remounts on slug change to reset gallery state.
 
 ## Clipboard actions
 
@@ -23,13 +23,13 @@ The banner is based on source height rather than combined width and is clamped t
 - Per-shot buttons show copying/copied status.
 - “Copy all” shows combining/copied status.
 - Clipboard or fetch failures surface an accessible alert.
-- `ClipboardItem` and `navigator.clipboard.write` are required; unsupported browsers receive an error instead of a silent failure.
+- `ClipboardItem` and `navigator.clipboard.write` are checked before image generation; unsupported browsers receive an error instead of starting unnecessary downloads. Copy actions keep their existing PNG/banner contract.
 - Image loading preserves the app accent as an icon fallback when a remote icon cannot be fetched.
 
 ## Known limitations
 
 - Export rendering is implemented in `src/main.tsx` rather than a separately tested module.
-- Clipboard results and banner collision behavior are not covered by automated browser tests.
+- On 2026-09-05, real-image single and combined PNG creation succeeded in Chrome with a clipboard test adapter (410,394 and 3,870,189 bytes). This validates generation and success feedback, not the system clipboard permission/write or exported banner visual fidelity. No committed browser regression suite exists.
 - Remote images must be fetchable with CORS for canvas export.
 
 ## Evidence

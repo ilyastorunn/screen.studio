@@ -24,7 +24,7 @@ This wiki is the durable synthesis layer. Source code, tests, configuration, rep
 ## Evidence snapshot
 
 - **Verified 2026-09-04:** inspected `src/`, `worker/`, `migrations/`, public brand assets, test files, Vite/Wrangler configuration, package scripts, current Git state, and production deployment results.
-- **Tested 2026-09-04:** `npm test` passes 10 Node tests; `npm run build` completes the TypeScript and Vite production build.
+- **Tested 2026-09-05:** `npm test` passes 11 Worker/client and 4 plugin tests; `npm run build` completes the TypeScript and Vite production build. Local Chrome checks cover responsive public UI, search/filter/navigation, request states, gallery PNG generation through a test adapter, and admin dialog keyboard behavior. These UI refinements are not deployed.
 - **Observed 2026-09-04:** `niceapps.club`, the Pages deployment URL, and `GET /api/apps` responded successfully after deployment.
 
 ## Known limitations

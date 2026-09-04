@@ -9,7 +9,7 @@ export function filterCatalog<T extends CatalogItem>(catalog: T[], query: string
   const needle = query.trim().toLowerCase()
   return catalog.filter(item =>
     (category === 'All' || item.category === category) &&
-    (!needle || item.name.toLowerCase().includes(needle))
+    (!needle || [item.name, item.category].some(value => value.toLowerCase().includes(needle)))
   )
 }
 

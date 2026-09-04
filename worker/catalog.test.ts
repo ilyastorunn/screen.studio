@@ -22,3 +22,11 @@ test('next discovery wraps and returns nothing for a one-item catalog', () => {
   assert.equal(nextDiscovery(catalog, 'last')?.slug, 'first')
   assert.equal(nextDiscovery([catalog[0]], 'first'), undefined)
 })
+
+// The search field promises category discovery as well as app-name lookup.
+test('searches category names and still respects an active category filter', () => {
+  assert.deepEqual(filterCatalog(catalog, ' DESIGN ', 'All').map(item => item.slug), ['picked', 'last'])
+  assert.deepEqual(filterCatalog(catalog, 'design', 'Tools'), [])
+  assert.deepEqual(filterCatalog(catalog, 'unknown', 'All'), [])
+  assert.deepEqual(filterCatalog([], 'design', 'All'), [])
+})

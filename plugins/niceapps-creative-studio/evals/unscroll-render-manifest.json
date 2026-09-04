@@ -1,0 +1,79 @@
+{
+  "slot": "APP_IPHONE_67",
+  "locale": "en-US",
+  "canvas": { "width": 1290, "height": 2796 },
+  "outputDir": "../../../output/screenshot-prototypes/unscroll-asc-v1/en-US/APP_IPHONE_67",
+  "frames": [
+    {
+      "file": "01-shield.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/03-shield-capture.png",
+      "headline": ["Ten seconds", "between you and", "the scroll."],
+      "body": ["A deliberate pause before", "a distracting app opens."],
+      "copy": { "x": 86, "y": 176, "headlineSize": 108, "headlineLineHeight": 110 },
+      "ui": { "x": 342, "y": 850, "width": 810 },
+      "palette": ["#071018", "#17303a", "#6d95a8"],
+      "glowX": "76%", "glowY": "25%"
+    },
+    {
+      "file": "02-focus.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/02-focus-capture.png",
+      "headline": ["Choose what", "pulls you in."],
+      "body": ["Protect apps, websites, or", "categories. Then start Focus."],
+      "copy": { "x": 450, "y": 176, "headlineSize": 112, "headlineLineHeight": 116 },
+      "ui": { "x": 80, "y": 760, "width": 820 },
+      "proofCard": { "x": 790, "y": 1740, "width": 420, "height": 360, "kicker": "YOUR RULES", "value": ["Apps", "Websites", "Categories"], "valueSize": 48, "valueLineHeight": 58, "valueY": 146, "caption": ["You choose", "what is protected."], "captionY": 296 },
+      "palette": ["#081117", "#183641", "#79a8ba"],
+      "glowX": "22%", "glowY": "29%", "brandAlign": "right"
+    },
+    {
+      "file": "03-hard-mode.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/04-hard-mode-capture.png",
+      "headline": ["When ten seconds", "isn't enough."],
+      "body": ["Hard Mode adds a full minute", "before you choose again."],
+      "copy": { "x": 86, "y": 176, "headlineSize": 106, "headlineLineHeight": 112 },
+      "ui": { "x": 405, "y": 820, "width": 760 },
+      "proofCard": { "x": 74, "y": 1510, "width": 350, "height": 320, "kicker": "HARD MODE", "value": ["60s"], "valueSize": 108, "valueY": 176, "caption": ["A full-minute pause"], "captionY": 264 },
+      "palette": ["#0b0b0c", "#29231f", "#9b744f"],
+      "glowX": "83%", "glowY": "31%"
+    },
+    {
+      "file": "04-insights.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/05-insights-capture.png",
+      "headline": ["See the patterns", "behind the pull."],
+      "body": ["Private Screen Time views help", "you notice how your day unfolds."],
+      "copy": { "x": 76, "y": 180, "headlineSize": 92, "headlineLineHeight": 100, "bodySize": 42, "bodyLineHeight": 56 },
+      "ui": { "x": 485, "y": 720, "width": 720 },
+      "palette": ["#091018", "#223340", "#768c9f"],
+      "glowX": "70%", "glowY": "22%"
+    },
+    {
+      "file": "05-journey.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/06-journey-capture.png",
+      "headline": ["Turn protected", "time into progress."],
+      "body": ["Build streaks and unlock", "milestones as you keep showing up."],
+      "copy": { "x": 76, "y": 180, "headlineSize": 94, "headlineLineHeight": 102 },
+      "ui": { "x": 92, "y": 720, "width": 760 },
+      "proofCard": { "x": 760, "y": 1690, "width": 440, "height": 330, "kicker": "YOUR JOURNEY", "value": ["6 / 8"], "valueSize": 92, "valueY": 180, "caption": ["Milestones achieved"], "captionY": 274 },
+      "palette": ["#11100d", "#443321", "#c08a52"],
+      "glowX": "82%", "glowY": "24%", "brandAlign": "right"
+    },
+    {
+      "file": "06-privacy.png",
+      "source": "../../../../doomscroll/output/app-store-final-captures-v1/captures/07-privacy-capture.png",
+      "headline": ["Your Screen Time", "stays on your iPhone."],
+      "body": ["Protected selections and detailed", "reports remain on-device."],
+      "copy": { "x": 76, "y": 180, "headlineSize": 98, "headlineLineHeight": 106 },
+      "ui": { "x": 300, "y": 760, "width": 820 },
+      "palette": ["#070d13", "#172533", "#607a91"],
+      "glowX": "32%", "glowY": "25%"
+    },
+    {
+      "file": "07-brand-close.png",
+      "headline": ["A pause,", "built in."],
+      "body": ["Screen Time, with intention."],
+      "copy": { "x": 104, "y": 780, "headlineSize": 146, "headlineLineHeight": 150, "bodySize": 56, "bodyLineHeight": 70 },
+      "palette": ["#111a24", "#59412c", "#d3a269"],
+      "glowX": "72%", "glowY": "34%"
+    }
+  ]
+}

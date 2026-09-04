@@ -7,7 +7,7 @@ The browser loads a Vite-built React application. `src/main.tsx` owns applicatio
 Routes are selected without a router dependency:
 
 - `#/` or an empty hash — public home.
-- `#/apps/:slug` — public app detail when the slug exists in the loaded catalog.
+- `#/apps/:slug` — public app detail when the slug exists; otherwise a loading, retryable error, or not-found view. Unknown hashes also receive the not-found view. `#apps` mounts the home collection and positions it below the header.
 - `#/admin` — admin UI.
 - Requests on `admin-screen-studio.devanta.net` render the admin regardless of hash.
 
@@ -15,8 +15,8 @@ Production API requests default to `https://screen-studio-api.ilyastorunn.worker
 
 ## Data flow
 
-1. The React app starts with three fallback entries from `src/main.tsx`.
-2. It requests `GET /api/apps` and replaces the fallback only when the API returns a non-empty catalog.
+1. The React app starts with an empty catalog and an explicit loading state.
+2. It requests `GET /api/apps` with an abort controller and 15-second timeout. Successful arrays replace the catalog, including an empty response. Failure is visible and retryable; sample content is not substituted.
 3. `parseApp` normalizes screenshots, optional detail fields, timestamps, icon data, and `is_dot_pick`.
 4. Public search, category filtering, Poppy’s Pick selection, and next-discovery ordering run client-side in `src/catalog.ts`.
 5. Admin writes go through the Worker; screenshots uploaded through the admin are stored in R2 and their public API URLs are stored with the D1 app row.

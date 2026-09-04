@@ -1,0 +1,15 @@
+{
+  "slot": "APP_IPHONE_67",
+  "locale": "en-US",
+  "width": 1290,
+  "height": 2796,
+  "files": [
+    "01-shield.png",
+    "02-focus.png",
+    "03-hard-mode.png",
+    "04-insights.png",
+    "05-journey.png",
+    "06-privacy.png",
+    "07-brand-close.png"
+  ]
+}

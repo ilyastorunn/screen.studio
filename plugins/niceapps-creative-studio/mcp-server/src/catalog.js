@@ -60,9 +60,45 @@ export async function fetchCatalog(fetcher = fetch, env = process.env) {
 }
 
 export async function importAppStore(input, fetcher = fetch, env = process.env) {
-  const url = `${apiBase(env)}/api/import/app-store?url=${encodeURIComponent(input)}`
-  const response = await fetcher(url, { headers: { Accept: 'application/json' } })
-  const payload = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(payload.error || `App Store import returned ${response.status}`)
-  return payload
+  const workerUrl = `${apiBase(env)}/api/import/app-store?url=${encodeURIComponent(input)}`
+  const workerResponse = await fetcher(workerUrl, { headers: { Accept: 'application/json' } })
+  const workerPayload = await workerResponse.json().catch(() => ({}))
+  if (workerResponse.ok) return workerPayload
+
+  // Apple can reject lookup calls from a Cloudflare Worker while accepting the
+  // same public request from the user's machine. The local MCP is the natural
+  // fallback boundary for that case.
+  const id = String(input).match(/(?:id|\/id)(\d{5,})/i)?.[1] || String(input).match(/^\d{5,}$/)?.[0]
+  const appleUrl = id
+    ? `https://itunes.apple.com/lookup?id=${id}&country=us`
+    : `https://itunes.apple.com/search?term=${encodeURIComponent(input)}&entity=software&country=us&limit=1`
+  const appleResponse = await fetcher(appleUrl, { headers: { Accept: 'application/json' } })
+  const applePayload = await appleResponse.json().catch(() => ({}))
+  if (!appleResponse.ok) {
+    throw new Error(workerPayload.error || `App Store import returned ${workerResponse.status}`)
+  }
+
+  const result = applePayload.results?.[0]
+  if (!result) throw new Error('No app found')
+  const screenshots = (result.screenshotUrls?.length ? result.screenshotUrls : (result.ipadScreenshotUrls || []))
+    .filter(Boolean)
+    .map(imageUrl => imageUrl.replace(/^http:/, 'https:').replace(/\/\d+x\d+bb\./, '/640x960bb.'))
+  const longDescription = String(result.description || '').trim()
+  const firstParagraph = longDescription.split(/\n\s*\n/)[0] || longDescription
+  const description = firstParagraph.length > 280 ? `${firstParagraph.slice(0, 277).trimEnd()}…` : firstParagraph
+
+  return {
+    name: result.trackName || '',
+    category: result.primaryGenreName || 'Productivity',
+    description,
+    long_description: longDescription,
+    developer: result.artistName || '',
+    platform: 'iOS',
+    app_store_url: result.trackViewUrl || '',
+    icon: result.artworkUrl512 || result.artworkUrl100 || '✦',
+    accent: '#b8f25a',
+    screenshots,
+    apple_id: result.trackId || 0,
+    website_url: result.sellerUrl || '',
+  }
 }
