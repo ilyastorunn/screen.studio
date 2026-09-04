@@ -17,8 +17,9 @@ This wiki is the durable synthesis layer. Source code, tests, configuration, rep
 5. [Screenshot experience](screenshots.md) — gallery, copy/export pipeline, and constraints.
 6. [Implementation](implementation.md) — current routes, admin behavior, content model, and important paths.
 7. [Operations](operations.md) — local verification, Cloudflare resources, deployment, and production evidence.
-8. [Decisions](decisions.md) — durable product and architecture choices.
-9. [Log](log.md) — reverse-chronological changes and verification history.
+8. [Creative Studio plugin](creative-studio.md) — MCP/Skill product boundary, current tools, evaluation, and deferred capabilities.
+9. [Decisions](decisions.md) — durable product and architecture choices.
+10. [Log](log.md) — reverse-chronological changes and verification history.
 
 ## Evidence snapshot
 
@@ -32,5 +33,6 @@ This wiki is the durable synthesis layer. Source code, tests, configuration, rep
 - No browser end-to-end or automated visual-regression suite currently covers the public UI, clipboard output, or admin flows.
 - R2 is configured and bound to the Worker, but a fresh production upload was not performed during the 2026-09-04 wiki audit.
 - The public theme is intentionally dark-only; semantic tokens exist, but no light-theme implementation or public toggle exists.
+- The repo-local Creative Studio plugin has not been installed through a marketplace or validated on real application briefs yet.
 
 New durable features or subsystems receive a dedicated lowercase page when they need independent links or repeated updates. Smaller refinements update the existing page that owns the subject.

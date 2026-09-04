@@ -1,5 +1,15 @@
 # Decisions
 
+## 2026-09-04 — Creative Studio combines a skill with a thin MCP
+
+**Status:** Accepted.
+
+The first Creative Studio vertical is screenshot strategy for published and unreleased iOS apps. The skill owns app understanding, selective clarification, reference reasoning, narrative, copy, and quality review. A thin read-only MCP owns deterministic access to niceapps.club and the existing App Store import endpoint. Raw in-app screens are required for final compositions; Simulator capture, icon generation, rendering/export, and full ASO analysis are deferred.
+
+**Rationale:** Separating judgment from data access keeps tools testable and prevents unimplemented generation capabilities from appearing in the product promise. Deferring Simulator capture isolates the core value chain for real-app evaluation.
+
+**Source:** Project-owner product decisions on 2026-09-04; `plugins/niceapps-creative-studio/`.
+
 ## 2026-09-04 — The home hero introduces the club
 
 **Status:** Accepted.

@@ -24,6 +24,8 @@ nice apps club is a hand-picked collection of apps worth opening. Its public lan
 - Public v1 has no light-theme toggle.
 - The admin is an operational content tool and is not required to share the public visual identity.
 - App content is sourced from D1, with App Store import and manual review in the admin.
+- The first Creative Studio product is an agent-assisted screenshot workflow for published and unreleased iOS apps. It requires user-provided raw in-app screens for final compositions; automatic Simulator capture is deferred.
+- App icon work is planned after the screenshot workflow is validated. Full keyword/ranking ASO analysis is not part of the current promise.
 
 ## Product language
 

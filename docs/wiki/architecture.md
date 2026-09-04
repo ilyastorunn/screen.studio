@@ -49,6 +49,12 @@ Screenshot arrays are serialized as JSON text in D1. The Worker uses a D1 batch 
 
 Cloudflare Pages serves `dist/`. `public/_redirects` rewrites all paths to `index.html`, while navigation inside the app uses hashes. `index.html` owns canonical, favicon, Open Graph, Twitter, theme-color, and document-title metadata.
 
+## Creative Studio plugin
+
+`plugins/niceapps-creative-studio/` is a repository-local Codex plugin, separate from the browser runtime. Its `screenshot-studio` skill owns reasoning and workflow guidance. Its Node stdio MCP server owns deterministic catalog access and calls the existing public Worker API; it does not write D1/R2 data or render assets.
+
+The MCP server is launched from the plugin root through `.mcp.json` and currently exposes catalog search, single-app retrieval, and App Store import. Pure catalog normalization/scoring logic has Node tests. Root `npm test` includes those plugin tests after the Worker suite.
+
 ## Evidence
 
 - **Verified:** `src/main.tsx`, `src/catalog.ts`, `src/app-store.ts`, `worker/index.ts`, `migrations/*.sql`, `vite.config.ts`, `wrangler.toml`, and `public/_redirects` inspected on 2026-09-04.

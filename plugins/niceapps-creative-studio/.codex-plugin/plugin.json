@@ -1,0 +1,28 @@
+{
+  "name": "niceapps-creative-studio",
+  "version": "0.1.0",
+  "description": "Create evidence-based App Store screenshot strategies with references from niceapps.club.",
+  "author": {
+    "name": "niceapps.club",
+    "url": "https://niceapps.club"
+  },
+  "homepage": "https://niceapps.club",
+  "repository": "https://github.com/ilyastorunn/screen.studio",
+  "keywords": ["app-store", "screenshots", "aso", "creative"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Niceapps Creative Studio",
+    "shortDescription": "Research and plan App Store screenshot sets.",
+    "longDescription": "Understand an app, find relevant visual references in niceapps.club, and turn the evidence into a coherent App Store screenshot strategy.",
+    "developerName": "niceapps.club",
+    "category": "Design",
+    "capabilities": ["Research", "Analysis"],
+    "websiteURL": "https://niceapps.club",
+    "defaultPrompt": [
+      "Create an App Store screenshot strategy for my app.",
+      "Analyze my screenshots using niceapps.club references."
+    ],
+    "brandColor": "#FF5A49"
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,5 +1,14 @@
 # Project log
 
+## 2026-09-04 — Creative Studio plugin foundation
+
+- **Scope:** Added the repository-local `niceapps-creative-studio` Codex plugin foundation, the first `screenshot-studio` skill for published and unreleased apps, a read-only catalog/App Store import MCP server, diagnostic references, and initial behavioral evaluation cases. Kept Simulator capture, final rendering/export, icon generation, and full ASO outside this first slice so the core workflow can be tested honestly.
+- **Affected areas:** `plugins/niceapps-creative-studio/`, root `package.json`, `docs/wiki/index.md`, `product.md`, `architecture.md`, `creative-studio.md`, `decisions.md`, and `log.md`.
+- **Decisions:** Package the product as one plugin with a judgment-oriented screenshot skill and deterministic read-only MCP. Require user-provided raw in-app screens for final compositions; support useful brief/shot-list work when screens are absent. Defer Simulator capture and icon work until the screenshot workflow is validated with real apps.
+- **Verification:** `npm run build` succeeded; root `npm test` passed 10 Worker/app tests and 3 plugin MCP tests; official plugin and skill validators passed; an MCP SDK client listed `search_apps`, `get_app`, and `import_app_store`; a live `search_apps` call returned production catalog results; `git diff --check` passed. Wiki path/link checks passed for the touched pages. No full Codex invocation or visual output was verified.
+- **Deployment:** Not deployed; no marketplace entry was created.
+- **Follow-up:** Run the first real-app evaluation set; add a renderer only after app understanding, retrieval, and narrative quality are acceptable. Add the icon vertical after screenshot validation.
+
 ## 2026-09-04 — Mascot-stage ellipse removal
 
 - **Scope:** Removed the decorative shared ellipse beneath the clustered hero mascots so the characters sit directly on the page background.

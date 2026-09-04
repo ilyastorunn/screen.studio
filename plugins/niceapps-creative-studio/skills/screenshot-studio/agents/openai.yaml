@@ -1,0 +1,4 @@
+interface:
+  display_name: "Screenshot Studio"
+  short_description: "Plan and create evidence-based App Store screenshots"
+  default_prompt: "Use $screenshot-studio to create an App Store screenshot set for my app."

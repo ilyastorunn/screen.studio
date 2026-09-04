@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "niceapps-catalog": {
+      "command": "node",
+      "args": ["./mcp-server/src/index.js"],
+      "cwd": ".",
+      "env": {
+        "NICEAPPS_API_URL": "https://screen-studio-api.ilyastorunn.workers.dev"
+      }
+    }
+  }
+}
